@@ -1,0 +1,69 @@
+﻿La génération a démarré 20/10/2011 18:32:47.
+     1>Projet "Z:\Prog C\Projet1\Projet1\Projet1.vcxproj" sur le nœud 2 (build cible(s)).
+     1>InitializeBuildStatus:
+         Création de "Debug\Projet1.unsuccessfulbuild", car "AlwaysCreate" a été spécifié.
+       ClCompile:
+         Toutes les sorties sont à jour.
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\Projet1.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Projet1.cpp
+         Projet1.cpp
+     1>z:\prog c\projet1\projet1\projet1.cpp(111): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(127): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(137): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
+     1>z:\prog c\projet1\projet1\projet1.cpp(141): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
+     1>z:\prog c\projet1\projet1\projet1.cpp(148): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
+     1>z:\prog c\projet1\projet1\projet1.cpp(154): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\string.h(105) : voir la déclaration de 'strcpy'
+     1>z:\prog c\projet1\projet1\projet1.cpp(157): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\string.h(105) : voir la déclaration de 'strcpy'
+     1>z:\prog c\projet1\projet1\projet1.cpp(193): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(200): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(207): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
+     1>z:\prog c\projet1\projet1\projet1.cpp(216): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
+     1>z:\prog c\projet1\projet1\projet1.cpp(222): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(224): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(182): warning C4101: 'j' : variable locale non référencée
+     1>z:\prog c\projet1\projet1\projet1.cpp(285): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(296): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(302): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(304): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(344): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>z:\prog c\projet1\projet1\projet1.cpp(355): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 c:\program files\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+       ManifestResourceCompile:
+         Toutes les sorties sont à jour.
+       Link:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Z:\Prog C\Projet1\Debug\Projet1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Projet1.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Z:\Prog C\Projet1\Debug\Projet1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Z:\Prog C\Projet1\Debug\Projet1.lib" /MACHINE:X86 Debug\Projet1.exe.embed.manifest.res
+         Debug\Projet1.obj
+         Debug\stdafx.obj
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.0A\bin\mt.exe /nologo /verbose /out:"Debug\Projet1.exe.embed.manifest" /manifest Debug\Projet1.exe.intermediate.manifest
+         Toutes les sorties sont à jour.
+       LinkEmbedManifest:
+         C:\Program Files\Microsoft Visual Studio 10.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"Z:\Prog C\Projet1\Debug\Projet1.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /ManifestFile:"Debug\Projet1.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"Z:\Prog C\Projet1\Debug\Projet1.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"Z:\Prog C\Projet1\Debug\Projet1.lib" /MACHINE:X86 Debug\Projet1.exe.embed.manifest.res
+         Debug\Projet1.obj
+         Debug\stdafx.obj
+         Projet1.vcxproj -> Z:\Prog C\Projet1\Debug\Projet1.exe
+       FinalizeBuildStatus:
+         Suppression du fichier "Debug\Projet1.unsuccessfulbuild".
+         Mise à jour de l'horodatage "Debug\Projet1.lastbuildstate".
+     1>Génération du projet "Z:\Prog C\Projet1\Projet1\Projet1.vcxproj" terminée (build cible(s)).
+
+La génération a réussi.
+
+Temps écoulé 00:00:02.87
