@@ -12,7 +12,7 @@ struct strTrain // Structure affichage des trains
 {
 	int num;
 	int i_prov;
-	int heure; // Heure d'arrivée en minutes
+	int heure; // Heure d'arrivÃ©e en minutes
 	char quai;
 };
 
@@ -20,8 +20,8 @@ typedef struct strProv strProv;
 struct strProv // Structure affichage des trains
 {
 	CH15 nom;
-	int nbtraintot; // Nombre de trains total de cette provenance depuis le début de l'execution du programme
-	int nbtrainact; // Nombre de trains total de cette provenance actuelement affiché
+	int nbtraintot; // Nombre de trains total de cette provenance depuis le dÃ©but de l'execution du programme
+	int nbtrainact; // Nombre de trains total de cette provenance actuelement affichÃ©
 };
 
 
@@ -52,6 +52,7 @@ int main()
     affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
 	do
 	{
+		printf("Veuillez entrer un code de mise â€¦ jour : ");
 		code=getchar();
 		fflush(stdin);
 		switch(code)
@@ -87,19 +88,19 @@ int main()
 
 int affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)
 {
-    system("cls");//Netoyage dee l'écran avant l'affichage
+    system("cls");//Netoyage dee l'Ã©cran avant l'affichage
     int i;
-    //Carractère de Tab_leau mal affiché par l'éditeur, ils ont été choisit en police Teminal pour une compatibilitée avec tout les systèmes windows.
-    printf("ÉÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍ»\n");//Haut du Tab_leau d'affichage
-    printf("ºTrain Nø ºEn provenance deºHeure d'arriv‚eºQuai º\n");//Nom des champ du Tab_leau
-    printf("ÌÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍ¹\n");//Separation horizontale
+    //CarractÃ¨re de Tab_leau mal affichÃ© par l'Ã©diteur, ils ont Ã©tÃ© choisit en police Teminal pour une compatibilitÃ©e avec tout les systÃ¨mes windows.
+    printf("Ã‰ÃÃÃÃÃÃÃÃÃÃ‹ÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃ‹ÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃ‹ÃÃÃÃÃÂ»\n");//Haut du Tab_leau d'affichage
+    printf("ÂºTrain NÃ¸ ÂºEn provenance deÂºHeure d'arrivâ€šeÂºQuai Âº\n");//Nom des champ du Tab_leau
+    printf("ÃŒÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÂ¹\n");//Separation horizontale
 
     for(i=0; i<nbTrainGare; i++)
     {
-        //Affiche les trains, 1 train par ligne, jusqu'à NbTrainGare
-        printf("º-- %03d --º%-16sº---- %02dh%02d ----º- %c -º\n",Tab_Train[i].num, Tab_Provenance[Tab_Train[i].i_prov].nom, Tab_Train[i].heure/60, Tab_Train[i].heure%60, Tab_Train[i].quai);
+        //Affiche les trains, 1 train par ligne, jusqu'Ã  NbTrainGare
+        printf("Âº-- %03d --Âº%-16sÂº---- %02dh%02d ----Âº- %c -Âº\n",Tab_Train[i].num, Tab_Provenance[Tab_Train[i].i_prov].nom, Tab_Train[i].heure/60, Tab_Train[i].heure%60, Tab_Train[i].quai);
     }
-    printf("ÈÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍ¼\n");//Bas du Tab_leau d'affichage
+    printf("ÃˆÃÃÃÃÃÃÃÃÃÃŠÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃŠÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃÃŠÃÃÃÃÃÂ¼\n");//Bas du Tab_leau d'affichage
 
 	return 0;
 }
@@ -133,18 +134,18 @@ int s_prov(strProv Tab_Provenance[Maxprov])
         printf("Erreur : Le nombre de provenances doit etre compris entre 1 et 12 \nla valeur %d ne convient donc pas\n\n\n\n\n",nbProv);
         return -1;
     }
-    printf("Entrez la provenance nø1 : ");
+    printf("Entrez la provenance nÃ¸1 : ");
     gets(Tab_Provenance[0].nom);
     for(i=1;i<nbProv;i++)
     {
-        printf("Entrer la provenance nø%d : ",i+1);
+        printf("Entrer la provenance nÃ¸%d : ",i+1);
         gets(prov);
         j=i;
 
         while(t_inTabProv(Tab_Provenance, i, prov) == 0)
 		{
-			printf("Erreur : La provenance existe déjà dans le tableau");
-			printf("Entrer la provenance nø%d : ",i+1);
+			printf("Erreur : La provenance existe dÃ©jÃ  dans le tableau");
+			printf("Entrer la provenance nÃ¸%d : ",i+1);
 			gets(prov);
 		}
 
@@ -179,46 +180,46 @@ int code_A(strTrain Tab_Train[],strProv Tab_Provenance[], int* p_nbTrain, int nb
 	int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure);
 	int t_code_A_errquai(int quai, int nbQuai);
 
-    int num, hh, mm, i=0, j;
+    int num, hh, mm, i=0;
     CH15 prov;
     char quai;
 
     if (*p_nbTrain == Maxtrain)
     {
-        printf("Erreur : Le nombre maximum de trains est déjà atteint");
+        printf("Erreur : Le nombre maximum de trains est dâ€šjÃ  atteint");
 		return -1;
     }
 
-    printf("Veuillez saisir le numéro du train : ");
+    printf("Veuillez saisir le numâ€šro du train : ");
     scanf("%d", &num);
     for (i=0; i<Maxtrain; i++)
     {
         if (Tab_Train[i].num == num)
         {
-			printf("Erreur : Le numéro du train entré existe déjà");
-			printf("Veuillez saisir le numéro du train : ");
+			printf("Erreur : Le numâ€šro du train entrâ€š existe dâ€šjâ€¦");
+			printf("Veuillez saisir le numÃ©ro du train : ");
 			scanf("%d", &num);
             i = 0;
         }
     }
     fflush(stdin);
 
-    printf("Veuillez saisir le libellé de sa provenance : ");
+    printf("Veuillez saisir le libellâ€š de sa provenance : ");
     gets(prov);
     i=0;
-    while(strcmp(Tab_Provenance[i].nom, prov) != 0) // Tant que la provenance tapée est absente du tableau de provenances
+    while(strcmp(Tab_Provenance[i].nom, prov) != 0) // Tant que la provenance tapÃ©e est absente du tableau de provenances
     {
-        i++; // Incrémenter i pour avancer dans le tableau de provenances
+        i++; // IncrÃ©menter i pour avancer dans le tableau de provenances
         if (i==Maxprov) // Si i atteint le maximum de provenances
         {
-			printf("Erreur : La provenance est inconnue"); // Alors la provenance tapée n'est pas dans le tableau
-     	    printf("Veuillez saisir le libellé de sa provenance : "); 
+			printf("Erreur : La provenance est inconnue"); // Alors la provenance tapÃ©e n'est pas dans le tableau
+     	    printf("Veuillez saisir le libellâ€š de sa provenance : ");
             gets(prov);// On redemande la provenance
-			i=0;// On remet i zéro pour relancer le parcours du tableau
+			i=0;// On remet i zÃ©ro pour relancer le parcours du tableau
         }
-    } // On sort du while avec la confirmation que la provenance tapée est dans le tableau de provenances
+    } // On sort du while avec la confirmation que la provenance tapÃ©e est dans le tableau de provenances
 
-    printf("Veuillez saisir l'heure d'arrivée du train : ");
+    printf("Veuillez saisir l'heure d'arrivâ€še du train : ");
     scanf("%d", &hh);
 	printf("Veuillez saisir les minutes : ");
 	scanf("%d", &mm);
@@ -232,17 +233,17 @@ int code_A(strTrain Tab_Train[],strProv Tab_Provenance[], int* p_nbTrain, int nb
 		quai=' ';
 	}
 
-	// *p_Nbtrain correspond à la position à laquelle nous allons affectez le nouveau train
+	// *p_Nbtrain correspond Ã  la position Ã  laquelle nous allons affectez le nouveau train
 
-    Tab_Train[(*p_nbTrain)].num = num;  
+    Tab_Train[(*p_nbTrain)].num = num;
     Tab_Train[(*p_nbTrain)].i_prov = i;
-    Tab_Train[(*p_nbTrain)].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenu dans mm entré par l'utilisateur
+    Tab_Train[(*p_nbTrain)].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenu dans mm entrÃ© par l'utilisateur
     Tab_Train[(*p_nbTrain)].quai = quai;
 
     *p_nbTrain = *p_nbTrain + 1;
 
-	Tab_Provenance[i].nbtrainact++; // On incrémente le nombre trains actuellement prévu pour cette provenance
-	Tab_Provenance[i].nbtraintot++; // On incrémente le nombre trains passés par cette provenance
+	Tab_Provenance[i].nbtrainact++; // On incrÃ©mente le nombre trains actuellement prÃ©vu pour cette provenance
+	Tab_Provenance[i].nbtraintot++; // On incrÃ©mente le nombre trains passÃ©s par cette provenance
 
     return 0;
 }
@@ -257,7 +258,7 @@ int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 		{
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
-				printf("Erreur : Le delai de 30 minutes n'est pas respecte\n");
+				printf("Erreur : Le dâ€šlai de 30 minutes n'est pas respectâ€š\n");
 				return 1;
 			}
 		}
@@ -269,7 +270,7 @@ int t_code_A_errquai(int quai, int nbQuai)
 {
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
-		printf("Erreur : Le numéro de quai entré est en dehors des quais disponibles\n");
+		printf("Erreur : Le numâ€šro de quai entrâ€š est en dehors des quais disponibles\n");
 		return 1;
 	}
 	return 0;
@@ -278,10 +279,10 @@ int t_code_A_errquai(int quai, int nbQuai)
 int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQuai)
 {
 	int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif);
-	
+
 	int num, hh, mm, i;
 
-	printf("Veuillez saisir le numéro du train : ");
+	printf("Veuillez saisir le numâ€šro du train : ");
     scanf("%d", &num);
     for (i=0; i<Maxtrain; i++)
     {
@@ -290,15 +291,15 @@ int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 			break;
 		}
 		if (i==(Maxtrain-1))
-		{	
-			printf("Erreur : Le numéro du train entré n'existe pas");
-			printf("Veuillez saisir le numéro du train : ");
+		{
+			printf("Erreur : Le numâ€šro du train entrâ€š n'existe pas");
+			printf("Veuillez saisir le numâ€šro du train : ");
 			scanf("%d", &num);
 			i = 0;
 		}
     }
 
-	printf("Veuillez saisir l'heure d'arrivée du train : ");
+	printf("Veuillez saisir l'heure d'arrivâ€še du train : ");
     scanf("%d", &hh);
 	printf("Veuillez saisir les minutes : ");
 	scanf("%d", &mm);
@@ -309,8 +310,8 @@ int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 		Tab_Train[i].quai=' ';
 	}
 
-	Tab_Train[i].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenu dans mm entré par l'utilisateur
-	
+	Tab_Train[i].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenu dans mm entrÃ© par l'utilisateur
+
 	return 0;
 }
 
@@ -324,7 +325,7 @@ int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int
 		{
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
-				printf("Erreur : Le delai de 30 minutes n'est pas respecte\n");
+				printf("Erreur : Le dâ€šlai de 30 minutes n'est pas respectâ€š\n");
 				return 1;
 			}
 		}
@@ -340,8 +341,9 @@ int code_Q(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 	int num, i;
 	char quai;
 
-	printf("Veuillez saisir le numéro du train : ");
+	printf("Veuillez saisir le numâ€šro du train : ");
     scanf("%d", &num);
+    fflush(stdin);
     for (i=0; i<Maxtrain; i++)
     {
         if (Tab_Train[i].num == num)
@@ -349,9 +351,9 @@ int code_Q(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 			break;
 		}
 		if (i==(Maxtrain-1))
-		{	
-			printf("Erreur : Le numéro du train entré n'existe pas");
-			printf("Veuillez saisir le numéro du train : ");
+		{
+			printf("Erreur : Le numâ€šro du train entrâ€š n'existe pas");
+			printf("Veuillez saisir le numâ€šro du train : ");
 			scanf("%d", &num);
 			i = 0;
 		}
@@ -380,7 +382,7 @@ int t_errmin_code_Q(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 		{
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
-				printf("Erreur : Le delai de 30 minutes n'est pas respecte\n");
+				printf("Erreur : Le dâ€šlai de 30 minutes n'est pas respectâ€š\n");
 				return 1;
 			}
 		}
@@ -392,7 +394,7 @@ int t_errquai_code_Q(int quai, int nbQuai)
 {
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
-		printf("Erreur : Le numéro de quai entré est en dehors des quais disponibles\n");
+		printf("Erreur : Le numâ€šro de quai entrâ€š est en dehors des quais disponibles\n");
 		return 1;
 	}
 	return 0;
