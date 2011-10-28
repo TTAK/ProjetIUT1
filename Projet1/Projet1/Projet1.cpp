@@ -29,6 +29,7 @@ int main()
 {
     int affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int NbTrainGare);
     int s_quai();
+	int init_strProv(strProv Tab_Provenance[]);
     int s_prov(strProv Tab_prov[Maxprov]);
     int code_A(strTrain Tab_Train[], strProv Tab_Provenance[], int* p_NbTrain, int nbQuai);
 	int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQuai);
@@ -37,6 +38,7 @@ int main()
 
     strTrain Tab_Train[Maxtrain];
     strProv Tab_Provenance[Maxprov];
+	init_strProv(Tab_Provenance);
 
     int nbTrain =0, nbQuai;
     int *p_nbTrain = &nbTrain;
@@ -91,16 +93,19 @@ int main()
 		}
 	}while(code !='F');
 
-
 	system("PAUSE");
     return 0;
 }
 
 int affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)
 {
-    system("cls");//Netoyage dee l'écran avant l'affichage
+	int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare);
+	system("cls");//Netoyage dee l'écran avant l'affichage
     int i;
-    //Carractère de Tableau mal affiché par l'éditeur, ils ont été choisit en police Teminal pour une compatibilitée avec tout les systèmes windows.
+
+	triTrain(Tab_Train,Tab_Provenance,nbTrainGare);//On trie les train par ordre d'heure decroissante
+
+    //Carractère de tableau mal affiché par l'éditeur, ils ont été choisit en police Teminal pour une compatibilitée avec tout les systèmes windows.
     printf("ÉÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍ»\n");//Haut du Tableau d'affichage
     printf("ºTrain Nø ºEn provenance deºHeure d'arriv‚eºQuai º\n");//Nom des champ du Tableau
     printf("ÌÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍ¹\n");//Separation horizontale
@@ -129,6 +134,18 @@ int s_quai()
     }
 	return nbQuai;
 }
+
+int init_strProv(strProv Tab_Provenance[])//Initialise les compteurs de provenance à 0.
+{
+	int i;
+	for(i=0 ; i<Maxprov ; i++)
+	{
+		Tab_Provenance[i].nbtrainact=0;
+		Tab_Provenance[i].nbtraintot=0;
+	}
+	return 0;
+}
+
 
 int s_prov(strProv Tab_Provenance[Maxprov])
 {
@@ -373,6 +390,7 @@ int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
 				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				systeme("pause");
 				return 1;
 			}
 		}
@@ -391,6 +409,7 @@ int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
 				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				systeme("pause");
 				return 1;
 			}
 		}
@@ -422,18 +441,51 @@ int t_errquai_code_Q(int quai, int nbQuai)
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
 		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
+		systeme("pause");
 		return 1;
 	}
 	return 0;
 }
 
-int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste
+int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste (inversion ordre)
 {
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
 		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
+		systeme("pause");
 		return 1;
 	}
 	return 0;
 }
 
+
+int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)
+{
+	int i,j;//Initialisation des compteurs
+	int Tab_iTain[Maxtrain];//Table des indices des train pour classement des indices A vire
+	strTrain Tab_TrainTemp[Maxtrain]; //structure train temporaire pour le tri
+	
+	//tri par insertion dans la structure temporaire
+	for(i=0 ; i<nbTrainGare ; i++)
+	{
+		for(j=i ; j>0 ; j--)
+		{
+			if(Tab_Train[i].heure>Tab_TrainTemp[j].heure)
+			{
+				Tab_TrainTemp[j]=Tab_TrainTemp[j-1];
+			}
+			else
+			{
+				break;//si la place de l'element est trouvée, on arrete la boucle
+			}
+		}
+		Tab_TrainTemp[j]=Tab_Train[i];
+	}
+
+	//Recopie dans la structure originale
+	for(i=0 ; i<nbTrainGare ; i++)
+	{
+		Tab_Train[i]=Tab_TrainTemp[i];
+	}
+	return 0;//retourne 0 si tout c'est bien passé
+}
