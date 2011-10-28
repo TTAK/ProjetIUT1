@@ -459,7 +459,7 @@ int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste (inve
 }
 
 
-int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)
+int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)//Tri les train dans la structure Tab_Train
 {
 	int i,j;//Initialisation des compteurs
 	int Tab_iTain[Maxtrain];//Table des indices des train pour classement des indices A vire
