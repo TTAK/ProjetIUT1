@@ -42,7 +42,7 @@ int main()
     char code;
 
     int nbProv=s_prov(Tab_Provenance);
-    if(nbProv <0)
+    if(nbProv < 0)
     {
         return -2;
     }
@@ -90,9 +90,9 @@ int affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGa
 {
     system("cls");//Netoyage dee l'écran avant l'affichage
     int i;
-    //Carractère de Tab_leau mal affiché par l'éditeur, ils ont été choisit en police Teminal pour une compatibilitée avec tout les systèmes windows.
-    printf("ÉÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍ»\n");//Haut du Tab_leau d'affichage
-    printf("ºTrain Nø ºEn provenance deºHeure d'arriv‚eºQuai º\n");//Nom des champ du Tab_leau
+    //Carractère de Tableau mal affiché par l'éditeur, ils ont été choisit en police Teminal pour une compatibilitée avec tout les systèmes windows.
+    printf("ÉÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍ»\n");//Haut du Tableau d'affichage
+    printf("ºTrain Nø ºEn provenance deºHeure d'arriv‚eºQuai º\n");//Nom des champ du Tableau
     printf("ÌÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍ¹\n");//Separation horizontale
 
     for(i=0; i<nbTrainGare; i++)
@@ -100,7 +100,7 @@ int affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGa
         //Affiche les trains, 1 train par ligne, jusqu'à NbTrainGare
         printf("º-- %03d --º%-16sº---- %02dh%02d ----º- %c -º\n",Tab_Train[i].num, Tab_Provenance[Tab_Train[i].i_prov].nom, Tab_Train[i].heure/60, Tab_Train[i].heure%60, Tab_Train[i].quai);
     }
-    printf("ÈÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍ¼\n");//Bas du Tab_leau d'affichage
+    printf("ÈÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍ¼\n");//Bas du Tableau d'affichage
 
 	return 0;
 }
@@ -114,6 +114,7 @@ int s_quai()
     if(nbQuai>6 || nbQuai<1)
     {
         printf("Erreur : Le nombre de quais doit etre compris entre 1 et 6 \nla valeur %d ne convient donc pas\n\n\n\n\n",nbQuai);
+        nbQuai=-1;
     }
 	return nbQuai;
 }
@@ -159,19 +160,6 @@ int s_prov(strProv Tab_Provenance[Maxprov])
 
     }
     return nbProv;
-}
-
-int t_inTabProv(strProv Tab_Provenance[], int max, CH15 prov)
-{
-    int a=1, k;
-    for(k=0; strcmp(prov, Tab_Provenance[k].nom)>0 && k<=max; k++)
-    {
-        if(strcmp(prov, Tab_Provenance[k].nom)==0)
-        {
-            a=0;
-        }
-    }
-    return a;
 }
 
 
@@ -266,15 +254,6 @@ int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 	return 0;
 }
 
-int t_code_A_errquai(int quai, int nbQuai)
-{
-	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
-	{
-		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
-		return 1;
-	}
-	return 0;
-}
 
 int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQuai)
 {
@@ -312,24 +291,6 @@ int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 
 	Tab_Train[i].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenu dans mm entré par l'utilisateur
 
-	return 0;
-}
-
-int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif)
-{
-	int j;
-
-	for (j=0; j < nbTrain; j++)
-	{
-		if (Tab_Train[j].quai == quai && numtrainmodif != j)
-		{
-			if ((Tab_Train[j].heure - (heure)) < 30)
-			{
-				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
-				return 1;
-			}
-		}
-	}
 	return 0;
 }
 
@@ -372,6 +333,59 @@ int code_Q(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 	return 0;
 }
 
+int code_D(strTrain Tab_train[], int* nbTrainP)
+{
+    int i,j;//Initialisation compteurs
+    int numTrain;//Variable numero du train rechercher
+    printf("Entrez le numero du train au depart : ");
+    scanf("%d",numTrain);//Récuperation de numTrain
+
+    for(i=0;i<*nbTrainP;i++)//on balaye tout le tableau d'affichage de train
+    {
+        if(Tab_train[i].num==numTrain)//On regarde si la case i contien le train numero numTrain
+        {
+            *nbTrainP=*nbTrain-1;//Si le train est trouvée on enlève 1 au nombre de train
+            for(j=i;j<(*nbTrainP);j++)//on decale ensuite les trains
+            {
+                Tab_Train[i]=Tab_Train[i+1];//pas de problème avec la taille du tableau on s'arrete à i=(nbTrain-1)
+            }
+            return 0;//si tout c'est bien passé, on renvoi 0
+        }
+    }
+    return -1;//sinon on renvoi 1
+}
+
+int t_inTabProv(strProv Tab_Provenance[], int max, CH15 prov)
+{
+    int a=1, k;
+    for(k=0; strcmp(prov, Tab_Provenance[k].nom)>0 && k<=max; k++)
+    {
+        if(strcmp(prov, Tab_Provenance[k].nom)==0)
+        {
+            a=0;
+        }
+    }
+    return a;
+}
+
+int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif)
+{
+	int j;
+
+	for (j=0; j < nbTrain; j++)
+	{
+		if (Tab_Train[j].quai == quai && numtrainmodif != j)
+		{
+			if ((Tab_Train[j].heure - (heure)) < 30)
+			{
+				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				return 1;
+			}
+		}
+	}
+	return 0;
+}
+
 int t_errmin_code_Q(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 {
 	int j;
@@ -399,3 +413,14 @@ int t_errquai_code_Q(int quai, int nbQuai)
 	}
 	return 0;
 }
+
+int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste
+{
+	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
+	{
+		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
+		return 1;
+	}
+	return 0;
+}
+
