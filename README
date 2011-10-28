@@ -1,3 +1,27 @@
 Projet TRAINTRAIN pour l'IUT descartes.
 
 Je vais coder toute la matinée vendredis matin essaille de rien faire avant midi xD
+
+Jai 2 3 idees pour le projet:
+
+1)finir les code bon ça, c'est pas une idee mais jvai le faire, jai deja fait le code 
+
+2)trier les fonction par fonction dans le code (c'est fait aussi)
+
+3) Une gestion d'erreur centralisée, en gros on rajoute une variable errOut dans le main, 
+toute les fonctions code renvoient un code erreur suivant l'erreur et on appelle la fonction 
+gestionErr par default dans le switch, et a chaque case on met : 
+errOut=code_X
+.
+.
+.
+.
+.
+.
+default : 
+gestionErr(errOut);
+
+si errOut=0, il ne se passe rien ^^
+sinon message d'erreur suivant le code errOut, et pour certaine erreurs gestionErr renvoi -1 
+qui singnifie erreur fatale(fin du programme) et 0 sinon
+Cela devrai clarifier le code je pense ^^
