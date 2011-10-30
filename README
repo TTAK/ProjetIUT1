@@ -1,6 +1,6 @@
 Projet TRAINTRAIN pour l'IUT descartes.
 
-Je vais coder toute la matinée vendredis matin essaille de rien faire avant midi xD
+Je vais coder toute la matinée vendredis matin essaye de rien faire avant midi xD
 
 Jai 2 3 idees pour le projet:
 
@@ -10,7 +10,7 @@ Jai 2 3 idees pour le projet:
 
 3) Une gestion d'erreur centralisée, en gros on rajoute une variable errOut dans le main, 
 toute les fonctions code renvoient un code erreur suivant l'erreur et on appelle la fonction 
-gestionErr par default dans le switch, et a chaque case on met : 
+gestionErr par default dans le switch, et à chaque case on met : 
 errOut=code_X
 .
 .
