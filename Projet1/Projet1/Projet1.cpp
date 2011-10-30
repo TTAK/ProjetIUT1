@@ -34,7 +34,8 @@ int main()
     int code_A(strTrain Tab_Train[], strProv Tab_Provenance[], int* p_NbTrain, int nbQuai);
 	int code_R(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQuai);
 	int code_Q(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQuai);
-	int code_D(strTrain Tab_Train[], int* nbTrainP);
+	int code_D(strTrain Tab_Train[], int* nbTrainP,strProv Tab_Provenance[]);
+	int code_V(strProv Tab_Provenance[], int nbProv);
 
     strTrain Tab_Train[Maxtrain];
     strProv Tab_Provenance[Maxprov];
@@ -82,13 +83,18 @@ int main()
 				fflush(stdin);
 				break;
 			case 'D':
-				code_D(Tab_Train,&nbTrain);
+				code_D(Tab_Train,&nbTrain,Tab_Provenance);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+			case 'V':
+				code_V(Tab_Provenance,nbProv);
 				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
 				fflush(stdin);
 				break;
 
 			default:
-				if (code !='F') printf("Erreur : Les codes disponibles sont A, R, Q, D, V, P, F");
+				if (code !='F') printf("Erreur : Les codes disponibles sont A, R, Q, D, V, P, F\n");
 				break;
 		}
 	}while(code !='F');
@@ -135,18 +141,6 @@ int s_quai()
 	return nbQuai;
 }
 
-int init_strProv(strProv Tab_Provenance[])//Initialise les compteurs de provenance à 0.
-{
-	int i;
-	for(i=0 ; i<Maxprov ; i++)
-	{
-		Tab_Provenance[i].nbtrainact=0;
-		Tab_Provenance[i].nbtraintot=0;
-	}
-	return 0;
-}
-
-
 int s_prov(strProv Tab_Provenance[Maxprov])
 {
     int i, j;
@@ -191,6 +185,18 @@ int s_prov(strProv Tab_Provenance[Maxprov])
 }
 
 
+int init_strProv(strProv Tab_Provenance[])//Initialise les compteurs de provenance à 0.
+{
+	int i;
+	for(i=0 ; i<Maxprov ; i++)
+	{
+		Tab_Provenance[i].nbtrainact=0;
+		Tab_Provenance[i].nbtraintot=0;
+	}
+	return 0;
+}
+
+
 int code_A(strTrain Tab_Train[],strProv Tab_Provenance[], int* p_nbTrain, int nbQuai)
 {
 	int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure);
@@ -212,7 +218,7 @@ int code_A(strTrain Tab_Train[],strProv Tab_Provenance[], int* p_nbTrain, int nb
     {
         if (Tab_Train[i].num == num)
         {
-			printf("Erreur : Le num‚ro du train entr‚ existe d‚j…");
+			printf("Erreur : Le num‚ro du train entr‚ existe d‚j…\n");
 			printf("Veuillez saisir le numéro du train : ");
 			scanf("%d", &num);
             i = 0;
@@ -342,26 +348,51 @@ int code_Q(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain, int nbQua
 	return 0;
 }
 
-int code_D(strTrain Tab_Train[], int* nbTrainP)
+int code_D(strTrain Tab_Train[], int* nbTrainP,strProv Tab_Provenance[])
 {
     int i,j;//Initialisation compteurs
     int numTrain;//Variable numero du train rechercher
     printf("Entrez le numero du train au depart : ");
-    scanf("%d",numTrain);//Récuperation de numTrain
+    scanf("%d",&numTrain);//Récuperation de numTrain
 
     for(i=0;i<*nbTrainP;i++)//on balaye tout le tableau d'affichage de train
     {
-        if(Tab_Train[i].num==numTrain)//On regarde si la case i contien le train numero numTrain
+        if(Tab_Train[i].num==numTrain)//On regarde si la case i contient le train numero numTrain
         {
             *nbTrainP=*nbTrainP - 1;//Si le train est trouvée on enlève 1 au nombre de train
-            for(j=i;j<(*nbTrainP);j++)//on decale ensuite les trains
+			Tab_Provenance[Tab_Train[i].i_prov].nbtrainact--;//On enlève 1 au nombre de provevances actuelements affichés
+            for(j=i;j<(*nbTrainP);j++)//on décale ensuite les trains
             {
                 Tab_Train[i]=Tab_Train[i+1];//pas de problème avec la taille du tableau on s'arrete à i=(nbTrain-1)
             }
-            return 0;//si tout c'est bien passé, on renvoi 0
+            return 0;//tout c'est bien passé, on renvoi 0
         }
     }
-    return -1;//sinon on renvoi 1
+    return 1;//sinon on renvoi 1
+}
+
+int code_V(strProv Tab_Provenance[], int nbProv)
+{
+	int i;
+	CH15 prov;
+	
+	printf("Entrez la provenance recherch‚e : ");
+	gets(prov);
+
+	for(i=0 ; i<nbProv ; i++)//on balaye le tableau de structure des provenances
+	{
+		if(strcmp(prov,Tab_Provenance[i].nom)==0)//Si on trouve la provenance, on affiche les informations à propos de celle ci.
+		{
+			printf("Provenance trouv‚e\n\n");
+
+			printf("%d trains sont actuelement affich‚e avec la provenance %s\n",Tab_Provenance[i].nbtrainact,Tab_Provenance[i].nom);
+			printf("%d trains ont ‚t‚ affich‚s depuis le d‚but avec la provenance %s\n\n",Tab_Provenance[i].nbtraintot,Tab_Provenance[i].nom);
+			system("pause");
+			return 0;//retourne 0 => tout c'est bien passé
+		}
+	}
+	printf("Erreur : Provenance introuvable\n\n");
+	return -5;//Retourne une erreur si la provenance n'est pas trouvée
 }
 
 
@@ -387,10 +418,10 @@ int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 	{
 		if (Tab_Train[j].quai == quai)
 		{
-			if ((Tab_Train[j].heure - (heure)) < 30)
+			if (((Tab_Train[j].heure - (heure)) > -30) && ((Tab_Train[j].heure - (heure)) < 30))
 			{
 				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
-				systeme("pause");
+				system("pause");
 				return 1;
 			}
 		}
@@ -409,7 +440,7 @@ int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
 				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
-				systeme("pause");
+				system("pause");
 				return 1;
 			}
 		}
@@ -428,6 +459,7 @@ int t_errmin_code_Q(strTrain Tab_Train[], int nbTrain, char quai, int heure)
 			if ((Tab_Train[j].heure - (heure)) < 30)
 			{
 				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				system("pause");
 				return 1;
 			}
 		}
@@ -441,7 +473,7 @@ int t_errquai_code_Q(int quai, int nbQuai)
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
 		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
-		systeme("pause");
+		system("pause");
 		return 1;
 	}
 	return 0;
@@ -452,7 +484,7 @@ int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste (inve
 	if (('A' > quai) || (quai >= ('A'+ nbQuai)))
 	{
 		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
-		systeme("pause");
+		system("pause");
 		return 1;
 	}
 	return 0;
@@ -462,7 +494,6 @@ int t_code_A_errquai(int quai, int nbQuai)//Nom pas homogène avec le reste (inve
 int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)//Tri les train dans la structure Tab_Train
 {
 	int i,j;//Initialisation des compteurs
-	int Tab_iTain[Maxtrain];//Table des indices des train pour classement des indices A vire
 	strTrain Tab_TrainTemp[Maxtrain]; //structure train temporaire pour le tri
 	
 	//tri par insertion dans la structure temporaire
@@ -470,13 +501,13 @@ int triTrain(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrainGare)//Tr
 	{
 		for(j=i ; j>0 ; j--)
 		{
-			if(Tab_Train[i].heure>Tab_TrainTemp[j].heure)
+			if(Tab_Train[i].heure<Tab_TrainTemp[j-1].heure)
 			{
-				Tab_TrainTemp[j]=Tab_TrainTemp[j-1];
+				Tab_TrainTemp[j]=Tab_TrainTemp[j-1];//décale les superieurs
 			}
 			else
 			{
-				break;//si la place de l'element est trouvée, on arrete la boucle
+				break;//si la place de l'element est trouvée, on arrête la boucle
 			}
 		}
 		Tab_TrainTemp[j]=Tab_Train[i];

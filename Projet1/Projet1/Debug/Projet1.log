@@ -1,4 +1,4 @@
-﻿La génération a démarré 28/10/2011 19:10:04.
+﻿La génération a démarré 30/10/2011 14:49:15.
      1>Projet "E:\Users\TTAK-7\ProjectIUT1\Projet1\Projet1\Projet1.vcxproj" sur le nœud 2 (rebuild cible(s)).
      1>_PrepareForClean:
          Suppression du fichier "Debug\Projet1.lastbuildstate".
@@ -9,48 +9,48 @@
          stdafx.cpp
          F:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Yu"StdAfx.h" /Fp"Debug\Projet1.pch" /Fo"Debug\\" /Fd"Debug\vc100.pdb" /Gd /TP /analyze- /errorReport:prompt Projet1.cpp
          Projet1.cpp
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(127): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(133): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(157): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(151): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(167): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(161): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(171): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(165): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(178): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(172): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(184): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(178): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : voir la déclaration de 'strcpy'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(187): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(181): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\string.h(105) : voir la déclaration de 'strcpy'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(210): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(216): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(217): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(223): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(224): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(230): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(233): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(239): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(239): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(245): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(241): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(247): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(274): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
-                 f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(285): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(280): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
      1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(291): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(293): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(297): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(315): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(299): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(327): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(321): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(350): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(333): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
                  f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(460): warning C4101: 'Tab_iTain' : variable locale non référencée
-     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(350): warning C4700: variable locale 'numTrain' non initialisée utilisée
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(356): warning C4996: 'scanf': This function or variable may be unsafe. Consider using scanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(304) : voir la déclaration de 'scanf'
+     1>e:\users\ttak-7\projectiut1\projet1\projet1\projet1.cpp(380): warning C4996: 'gets': This function or variable may be unsafe. Consider using gets_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+                 f:\program files (x86)\microsoft visual studio 10.0\vc\include\stdio.h(277) : voir la déclaration de 'gets'
        ManifestResourceCompile:
          E:\Program Files (x86)\Microsoft SDKs\Windows\v7.0A\bin\rc.exe /nologo /fo"Debug\Projet1.exe.embed.manifest.res" Debug\Projet1_manifest.rc 
        Link:
@@ -73,4 +73,4 @@
 
 La génération a réussi.
 
-Temps écoulé 00:00:01.01
+Temps écoulé 00:00:00.80
