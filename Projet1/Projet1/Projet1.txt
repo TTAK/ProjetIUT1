@@ -1,0 +1,887 @@
+#include "stdio.h"
+#include "stdlib.h"
+#include "string.h"
+#define Maxtrain 8 // Définition de "constante" pour le maximum de train
+#define Maxprov 12// Définition de "constante" pour le maximum de provenance
+
+typedef char CH15[16];//
+
+typedef struct strTrain strTrain;
+struct strTrain // Structure affichage des trains
+{
+  int num;// Numéro du train
+	int i_prov;// Indice du tableau de provenance correspondant à la provenance du train
+	int heure; // Heure d'arrivée du train stockée en minutes
+	char quai;// Variable char (une seule lettre) pour stocker le quai du train
+};
+
+typedef struct strProv strProv;
+struct strProv // Structure affichage des trains
+{
+	CH15 nom;// Tableau de chaine de caractères de taille 15 pour le nom de la provenance
+	int nbtraintot; // Nombre de trains total de cette provenance depuis le début de l'execution du programme
+	int nbtrainact; // Nombre de trains total de cette provenance actuelement affiché
+};
+
+
+int main()
+{
+    /* Signification et utilité des variables passées en arguments aux fonctions :
+        -strTrain Tab_Train[] : Tableau de structure passé en argument pour ajouter ou modifier les informations sur les trains affichés (entre 0 et 8)
+        -strProv Tab_Provenance[] : Tableau de structure passé en argument pour ajouter ou modifier les provenances enregistrées ou le nombre de train qui sont ou on été apparentés à ces provenances (entre 1 et 12)
+        -int nbTrain : variable contenant le nombre de trains actuellement affichés, présents dans Tab_Train[] (entre 0 et 8)
+        -int* p_NbTrain : pointeur sur nbTrain passé en argument pout pouvoir modifier nbTrain en dehors du main
+        -int nbQuai : variable contenant le nombre de quais disponibles (entre 1 et 6)
+        -int nbProv : variable contenant le nombre de provenances tapées (entre 1 et 12)
+    */
+    void affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain);
+    int s_quai();
+	void init_strProv(strProv Tab_Provenance[]);
+    int s_prov(strProv Tab_prov[]);
+    int code_A(strTrain Tab_Train[], strProv Tab_Provenance[], int* p_NbTrain, int nbQuai, int nbProv);
+	int code_R(strTrain Tab_Train[], int nbTrain);
+	int code_Q(strTrain Tab_Train[], int nbTrain, int nbQuai);
+	int code_D(strTrain Tab_Train[], int* p_NbTrain,strProv Tab_Provenance[]);
+	int code_V(strProv Tab_Provenance[], int nbProv);
+	void code_P(strProv Tab_Provenance[], int nbProv);
+
+    strTrain Tab_Train[Maxtrain]; // Création d'un tableau de structure pour les trains de taille Maxtrain
+    strProv Tab_Provenance[Maxprov];// Création d'un tableau de structure pour les provenances de taille Maxprov
+	init_strProv(Tab_Provenance);// Initialisation de de tableau de structure strProv
+
+    printf("\t\t********************************************\n");
+    printf("\t\t* Bienvenue sur le terminal de mise … jour *\n");
+    printf("\t\t*           des trains de la SNCF          *\n");
+    printf("\t\t********************************************\n");
+
+
+    int nbTrain=0, nbQuai;// Création des variables pour stocker le nombre de trains et de quais, de base il n'y a pas de train
+    int *p_NbTrain = &nbTrain;// Création d'un pointeur sur nbtrain qui sera utilisé pour modifier nbtrain après passage du pointeur à une fonction
+    char code;// Création d'une variable caractère pour stocker le code tapé (A, R, Q, D, V, P et F)
+
+    int nbProv=s_prov(Tab_Provenance);// Saisie des provenances
+    if(nbProv < 0)// Si le nombre de provenances renvoyé est négatif alors il y a eu une erreur, on arrete le programme
+    {
+        return -2;// Le programme s'arrete suite à l'erreur renvoyée par s_prov()
+    }
+
+    nbQuai=s_quai();// Saisie des quais
+	if(nbQuai < 0)// Si le nombre de provenances renvoyé est négatif alors il y a eu une erreur, on arrete le programme
+	{
+		return -3;// Le programme s'arrete suite à l'erreur renvoyée par s_quai()
+	}
+
+    affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);//On affiche le tableau de train (qui est vide à la base)
+	do // Boucle principale de la demande du code de MAJ
+	{
+		printf("\nVeuillez entrer un code de mise … jour : ");
+		code=getchar();// Saisie dans la vraiable code du caractère grâce à la fonction getchar()
+		fflush(stdin);// On vide le buffer après le getchar() pour éviter qu'il prenne en compte la touche "Entrer" comme un caractère
+		switch(code)// Traitement des differents codes de MAJ
+		{
+		    // Annonce de l'arrivée d'un nouveau train
+			case 'A':
+				code_A(Tab_Train, Tab_Provenance, p_NbTrain, nbQuai, nbProv);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Annonce de la modification de l'heure d'arrivée d'un train déjà affiché
+			case 'R':
+				code_R(Tab_Train, *p_NbTrain);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Annonce de la notification ou modification de quai d'un train déjà annoncé
+			case 'Q':
+				code_Q(Tab_Train, *p_NbTrain, nbQuai);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Départ d'un train
+			case 'D':
+				code_D(Tab_Train,&nbTrain,Tab_Provenance);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Demande d'affichage des renseignements concernant une provenance
+			case 'V':
+				code_V(Tab_Provenance,nbProv);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Demande d'affichage des renseignements de chacune des provenances enregistrées
+			case 'P':
+				code_P(Tab_Provenance,nbProv);
+				affichage_ecran(Tab_Train, Tab_Provenance, nbTrain);
+				fflush(stdin);
+				break;
+
+            // Arret de la saisie du code de MAJ, affichage du bilan et arret du programme
+			case 'F':
+				code_P(Tab_Provenance,nbProv);
+				break;
+
+            // Par défaut, si le code de MAJ entré ne correspond pas, alors afficher une erreur
+			default:
+				if (code !='F') printf("Erreur : Les codes disponibles sont A, R, Q, D, V, P, F\n");
+				break;
+		}
+	}while(code !='F');// Fin de la boucle principale
+
+    return 0;// Arret du programme
+}
+
+/*
+  affichage_ecran permet d'afficher les trains grâce à Tab_Train ainsi que leurs provenances avec Tab_Provenance sachant qu'il a
+  autant de trains que nbTrain.
+  Cette fonction ne renvoie rien.
+*/
+void affichage_ecran(strTrain Tab_Train[],strProv Tab_Provenance[], int nbTrain)
+{
+	system("cls");//Nettoyage de l'écran avant l'affichage
+    int i;// Variable de boucle
+
+    //Certains caractères étant mal affichés en console on a donc utilisé une police spéciale (appellée "Terminale") pour une meilleur lisibilité
+    printf("\t\tÉÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍËÍÍÍÍÍ»\n");//Haut du Tableau d'affichage
+    printf("\t\tºTrain Nø ºEn provenance deºHeure d'arriv‚eºQuai º\n");//Nom des champs du Tableau
+    printf("\t\tÌÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÎÍÍÍÍÍ¹\n");//Séparation horizontale
+
+    for(i=0; i<nbTrain; i++)// Boucle d'affichage du tableau de trains "affichés"
+    {
+        //Affiche les trains, 1 train par ligne, jusqu'à nbTrain. On repasse les minutes sous format hhHmm avec le modulo et la division par 60
+        printf("\t\tº-- %03d --º%-16sº---- %02dh%02d ----º- %c -º\n",Tab_Train[i].num, Tab_Provenance[Tab_Train[i].i_prov].nom, Tab_Train[i].heure/60, Tab_Train[i].heure%60, Tab_Train[i].quai);
+    }
+    printf("\t\tÈÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍÍÍÍÍÍÍÍÍÍÍÊÍÍÍÍÍ¼\n");//Bas du Tableau d'affichage
+}
+
+/*
+  "s_" signifie que la fonction fait une saisie, ici c'est la saisie préliminaire du nombre de quais disponibles. Si on saisie
+  un nombre qui n'est pas compris entre 1 et 6 alors on affiche l'erreur et on renvoie nbQuai=-1 ce qui arretera le programme
+  (l'erreur est gérée dans le main).
+  Cette fonction vérifie si le nombre de quai est correct.
+*/
+int s_quai()
+{
+    int nbQuai;// Variable pour récupérer le nombre de quais entré
+    printf("Veuillez entrer le nombre de quai : ");
+    while(scanf("%d",&nbQuai)==0)// Boucle de vérifiation de la saisie d'un nombre entier et non autre chose (chaine de caractère par exemple), on utilise le fait que scanf renvoie 0 si ce qui est saisi n'est pas conforme au format attendu
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+    fflush(stdin);// On vide le buffer après un scanf
+    if(nbQuai>6 || nbQuai<1)// Condition pour vérifier si le nombre entré est entre 1 et 6
+    {
+        printf("Erreur : Le nombre de quais doit etre compris entre 1 et 6 \nla valeur %d ne convient donc pas\n",nbQuai);
+		system("pause");
+        nbQuai=-1;// On retourne nbquai=-1 pour dire qu'il y a eu une erreur
+    }
+	return nbQuai;// Tout s'est bien passé on retourne nquai
+}
+
+/*
+  s_prov va permettre la saisie du nombre et des noms de provenances qui seront stockées dans Tab_Provenance. Elle renverra
+  -1 si il y a eu une erreur ou le nombre de provenance et ce dans nbProv.
+  Cette fonction vérifie si le nombre de provenances est correct et si la provenance n'a pas déjà été saisie.
+*/
+int s_prov(strProv Tab_Provenance[])
+{
+    int i, j;// Variables compteur pour les boucles
+    int nbProv;// Variable pour stocker le nombre de provenances entré
+	CH15 prov;// Variable pour stocker le nom de la provenance entré
+
+	/*
+        Les variables de t_inTabProv sont :
+            -strProv Tab_Provenance : Tableau de provenances à tester
+            -int max : Nombre total de provenances tapées et correctes
+            -CH15 prov : Chaine de caractères pour contenir la provenance entrée
+	*/
+    int t_inTabProv(strProv Tab_Provenance[], int max, CH15 prov);
+
+    printf("Entrer le nombre total de provenances : ");
+    while(scanf("%d",&nbProv)==0)// Sécurité de saisie
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+    fflush(stdin);
+
+    if(nbProv<1 || nbProv > Maxprov)// On verifie que le nombre de provenance est compris entre 1 et le maximum de provenances (Maxprov)
+    {
+        printf("Erreur : Le nombre de provenances doit etre compris entre 1 et 12 \nla valeur %d ne convient donc pas\n",nbProv);
+        system("pause");
+		return -1;// On renvoie nbquai=-1 pour signaler l'erreur
+    }
+    printf("Entrez la provenance nø1 : ");
+    gets(Tab_Provenance[0].nom);// On recupère la première provenance dans la case 0 de Tab_Provenance
+    for(i=1;i<nbProv;i++)// Boucle pour entrer les autres provenances si nécessaire sachant que la première est déjà tapée (i=1)
+    {
+        printf("Entrer la provenance nø%d : ",i+1);
+        gets(prov);// On entre la prochaine provenance dans prov
+        j=i;// On affecte j à i
+
+        while(t_inTabProv(Tab_Provenance, i, prov) == 0)// On verifie si la provenance existe déjà et on boucle pour en demander une nouvelle
+		{
+			printf("Erreur : La provenance existe d‚j… dans le tableau\n");
+			printf("Entrez la provenance nø%d : ",i+1);
+			gets(prov);
+		}
+
+        // On effectue un tri par insertion pour placer les provenances par ordre alphabétique (A vers Z)
+		while(strcmp(prov, Tab_Provenance[j-1].nom)<0 && j>0)// On compare si la provenance prov est plus petite (donc plus haut dans l'alphabet) que la provenance à l'indice précédant
+                                                             // de Tab_Provenance et si j est supérieur à 0 (sinon il y aura dépassement de capacité
+		{
+			strcpy(Tab_Provenance[j].nom, Tab_Provenance[j-1].nom);// On déplace la provenance j-1 d'une case, soit dans j
+			j=j-1;// On décrémente j
+		}
+		strcpy(Tab_Provenance[j].nom, prov);// On a déplacé les provenances qui étaient inférieur (plus bas dans l'alphabet) donc on place prov à l'indice j
+
+    }
+    return nbProv;// Tout s'est bien passé on renvoie le nombre de provenances
+}
+
+/*
+  init_strProv : La fonction va mettre les variables nbtrainact et nbtraintot de la structure strProv contenue dans
+  Tab_provenance à 0.
+  La fonction ne renvoie rien.
+*/
+void init_strProv(strProv Tab_Provenance[])
+{
+	int i;// Compteur de boucle
+	for(i=0 ; i<Maxprov ; i++)// Boucle de 0 à Maxprov
+	{
+		Tab_Provenance[i].nbtrainact=0;// On initialise à 0
+		Tab_Provenance[i].nbtraintot=0;// On initialise à 0
+	}
+}
+
+/*
+  Les fonctions "code_" représentent les fonctions associées à chaque code de MAJ.
+  code_A : la fonction est lancée si le code entré est "A", elle va effectuer la saisie de :
+			-numéro train : on renvoie -1 si le maximum de trains est atteint et on redemande le numéro si le train existe déjà
+			-provenance : on redemande la provenance si elle est inconnue sinon on continue
+			-heure et minutes : on redemande l'heure et/ou les minutes si elles sont incorrectes sinon on continue
+			-quai : deux fonctions vérifient si le quai est incorrect ou si le délai de 30 minutes est respecté auquel cas on
+                    supprime le quai
+  Une fonction est ensuite appellée (sauf erreur détectée) pour mettre à jour Tab_Train[] et Tab_Provenance[] sachant qu'il y a
+  *p_NbTrain (pointeur sur nbTrain), nbQuai et nbProv.
+  Cette fonction vérifie le respect du délai des 30 minutes, l'existence de la provenance et du quai, l'absence de
+  train de même numéro ainsi que le non dépassement du nombre maximum de trains qui soit possible d'afficher.
+  code_A permet l'ajout de train.
+*/
+int code_A(strTrain Tab_Train[],strProv Tab_Provenance[], int* p_NbTrain, int nbQuai, int nbProv)
+{
+    /*
+        Les variables utilisés dans ces fonctions sont :
+            -strTrain Tab_Train[] : Tableau de train utilisé pour les tests et pour ajouter un train
+            -int nbTrain : Nombre de trains affichés en gare utilisé pour savoir jusqu'où parcourir le tableau
+            -int nbQuai : Nombre de quai disponible pour vérifier la validité du quai saisi
+            -char quai : Contient le quai(un seul caractère) saisi pour être stocké ou tester
+            -int heure : Variable des heures passées en minutes pour être stockées ou tester
+            -int num : Contient le numéro du train saisi qui pourra être comparé aux autres numéros de trains
+            -int i_prov : Indice dans le tableau de provenance de la provenance saisie. Utilisé pour ajout dans la structure train
+    */
+	int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure);
+	int t_errquai_code_A(int quai, int nbQuai);
+	void ajoutTrain(strTrain Tab_Train[],int nbTrain, int num, int i_Prov, int heure, char quai);
+
+    int num, hh, mm, i=0;// Num contiendra le numéro de train, hh les heures, mm les minutes pour les saisies et i que l'ont met à zéro
+                         //servira de compteur
+    CH15 prov;// prov contiendra la provenance saisie
+    char quai;// quai contiendra le caractère du quai saisi
+
+    if (*p_NbTrain == Maxtrain)// On compare si la valeur de la variable pointé par p_NbTrain est égale à Maxtrain
+    {
+        printf("Erreur : Le nombre maximum de trains est d‚jà atteint");
+		return -1;// On retourne -1 car on ne peut plus ajouter de train
+    }
+
+    printf("Veuillez saisir le num‚ro du train : ");
+    while(scanf("%d", &num)==0)// Saisie de num
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+
+    for (i=0; i<*p_NbTrain; i++)// Boucle de i à nbTrain (pointé par *p_NbTrain)
+    {
+        if (Tab_Train[i].num == num)// Si num est égal au numéro du Train i
+        {
+			printf("Erreur : Le num‚ro du train entr‚ existe d‚j…\n");
+			printf("Veuillez saisir le num‚ro du train : ");
+            while(scanf("%d", &num)==0)// Alors on redemande la saisie de num
+            {
+                fflush(stdin);
+                printf("Erreur : Saisie incorrecte\n\n");
+                printf("Veuillez saisir le num‚ro du train : ");
+            }
+            i = 0;// On passe i à zéro pour relancer la boucle for
+        }
+    }
+    fflush(stdin);
+
+    printf("Veuillez saisir le libell‚ de sa provenance : ");
+    gets(prov);// Saisie de prov
+    i=0;// On remet i à 0 pour l'utiliser comme compteur
+    while(strcmp(Tab_Provenance[i].nom, prov) != 0) // Tant que la provenance tapée est absente du tableau de provenances
+    {
+        i++; // Incrémenter i pour avancer dans le tableau de provenances
+        if (i==nbProv) // Si i atteint le nombre de provenances maximum
+        {
+			printf("Erreur : La provenance est inconnue\n"); // Alors la provenance tapée n'est pas dans le tableau
+     	    printf("Veuillez saisir le libell‚ de sa provenance : ");
+            gets(prov);// On redemande la provenance
+			i=0;// On remet i zéro pour relancer le parcours du tableau
+        }
+    } // On sort du while avec la confirmation que la provenance tapée est dans le tableau de provenances avec l'indice i
+
+    printf("Veuillez saisir l'heure d'arriv‚e du train : ");
+    while(scanf("%d", &hh)==0)// Saisie des heures
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+	while(hh>=24 || hh<0)//Gestion des erreurs de saisie des heures
+	{
+		printf("    Erreur : heure d'arriv‚e du train invalide\n");
+		printf("Veuillez saisir l'heure d'arriv‚e du train : ");
+		scanf("%d", &hh);
+	}
+	printf("Veuillez saisir les minutes : ");
+	while(scanf("%d", &mm)==0)// Saisie des minutes
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+	while(mm>=60 || mm<0)//Gestion des erreurs de saisie des minutes
+	{
+		printf("	Erreur : minutes d'arriv‚e du train invalide\n");
+		printf("Veuillez saisir les minutes : ");
+        while(scanf("%d", &mm)==0)
+        {
+            fflush(stdin);
+            printf("Erreur : Saisie incorrecte\n\n");
+            printf("Veuillez saisir le num‚ro du train : ");
+        }
+	}
+    fflush(stdin);
+
+    printf("Veuillez saisir la lettre du quai correspondant au train : ");
+    quai=getchar();// Saisie du quai
+
+    /*
+        Cette condition est vrai si les deux fonctions renvoient 0 ce qui implique que le délai des 30 minutes n'est pas respecté
+        ou que le quai saisi est invalide.
+    */
+	if (t_errquai_code_A(quai, nbQuai) || t_errmin_code_A(Tab_Train, *p_NbTrain, quai, (hh*60 + mm)))
+	{
+		quai=' ';// On supprime alors le quai si l'une des erreurs se produit
+	}
+
+
+	// *p_Nbtrain correspond à la position à laquelle nous allons affectez le nouveau train
+
+
+	ajoutTrain(Tab_Train,*p_NbTrain,num,i, hh*60 + mm, quai);// On ajoute donc le train avec les variables saisies
+	*p_NbTrain = *p_NbTrain + 1;// On incrémente le nombre de trains affichés puisqu'on a ajouté un train
+
+	Tab_Provenance[i].nbtrainact++; // On incrémente le nombre trains actuellement prévu pour cette provenance
+	Tab_Provenance[i].nbtraintot++; // On incrémente le nombre trains passés par cette provenance
+
+    return 0;
+}
+
+/*
+  code_R : la fonction est lancée si le code entré est "R", elle va effectuer la saisie de :
+			-numéro train : on renvoie -2 si le train n'existe pas sinon on continue
+			-heure et minutes : on redemande l'heure et/ou les minutes si elles sont incorrectes sinon on continue
+  La fonction renvoie -1 si il n'y a pas de train à l'approche.
+  Une fois les vérifications faites, on stocke la nouvelle heure dans le structure du train correspondant(Tab_Train).
+  Cette fonction vérifie l'annonce d'au moins un train, l'existance du train que l'on veut modifier et le respect du délai des 30 minutes
+  vis à vis de la nouvelle heure.
+  code_R permet le changement de l'heure d'un train.
+*/
+int code_R(strTrain Tab_Train[], int nbTrain)
+{
+    /*
+        Les variables utilisés dans ces fonctions sont :
+            -strTrain Tab_Train[] : Tableau de train utilisé pour les tests
+            -int nbTrain : Nombre de trains affichés en gare utilisé pour savoir jusqu'où parcourir le tableau
+            -char quai : Contient le quai(un seul caractère) du train dont on a saisi le numéro qui sera utilisé pour les tests
+            -int heure : Variable des heures, passées en minutes, du train saisi qui sera testé
+            -int numtrainmodif : Contient le numéro du train saisi qui sera testé
+    */
+	int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif);
+	void triTrain(strTrain Tab_Train[], int nbTrain);
+
+	int num, hh, mm, i;// Num contiendra le numéro de train, hh les heures, mm les minutes pour les saisies et i servira de compteur
+
+	if(nbTrain<1)// On vérifie si il y a au moins un train
+	{
+		printf("Erreur : Pas de train … l'approche");
+		return -1;// On renvoie -1 car il n'y a pas de train
+	}
+	else// Il y a au moins un train
+	{
+		printf("Veuillez saisir le num‚ro du train : ");
+        while(scanf("%d", &num)==0)// Saisie du numéro
+        {
+            fflush(stdin);
+            printf("Erreur : Saisie incorrecte\n\n");
+            printf("Veuillez saisir le num‚ro du train : ");
+        }
+		for (i=0; i<nbTrain; i++)//Boucle de i à nbTrain
+		{
+			if (Tab_Train[i].num == num)// Si num correspond au numéro du train i
+			{
+				printf("Veuillez saisir l'heure d'arriv‚e du train : ");
+                while(scanf("%d", &hh)==0)// Saisie des heures
+                {
+                    fflush(stdin);
+                    printf("Erreur : Saisie incorrecte\n\n");
+                    printf("Veuillez saisir le num‚ro du train : ");
+                }
+				while(hh>=24 || hh<0)//Gestion des erreurs de saisie des heures
+				{
+					printf("    Erreur : heure d'arriv‚e du train invalide\n");
+					printf("Veuillez saisir l'heure d'arriv‚e du train : ");
+	                while(scanf("%d", &hh)==0)
+                    {
+                        fflush(stdin);
+                        printf("Erreur : Saisie incorrecte\n\n");
+                        printf("Veuillez saisir le num‚ro du train : ");
+                    }
+				}
+				printf("Veuillez saisir les minutes : ");
+                while(scanf("%d", &mm)==0)// Saisie des minutes
+                {
+                    fflush(stdin);
+                    printf("Erreur : Saisie incorrecte\n\n");
+                    printf("Veuillez saisir le num‚ro du train : ");
+                }
+				while(mm>=60 || mm<0)//Gestion des erreurs de saisie des minutes
+				{
+					printf("    Erreur : minutes d'arriv‚e du train invalide\n");
+					printf("Veuillez saisir les minutes : ");
+                    while(scanf("%d", &mm)==0)
+                    {
+                        fflush(stdin);
+                        printf("Erreur : Saisie incorrecte\n\n");
+                        printf("Veuillez saisir le num‚ro du train : ");
+                    }
+				}
+				fflush(stdin);
+
+                /*
+                    Cette condition est vraie si le train saisi ne respecte plus les 30 minutes de délai sur le quai qui lui est attribué.
+                */
+
+				if (t_errmin_code_R(Tab_Train, nbTrain, Tab_Train[i].quai, (hh*60 + mm), i))
+				{
+					Tab_Train[i].quai=' ';// On supprime donc son quai
+				}
+
+				Tab_Train[i].heure = hh*60 + mm; // On remet les heures en minutes et on les ajoute aux minutes contenues dans mm
+				triTrain(Tab_Train, nbTrain);// On lance la fonction de tri du tableau Tab_Train
+				return 0;// On renvoie 0 donc tout s'est bien passé
+			}
+		}//Le numéro du train saisi n'a pas été trouvé (on est sorti du for)
+
+		printf("Erreur : Le num‚ro du train entr‚ n'existe pas\n");
+		system("pause");
+		return -2;// On renvoie alors -2 pour signaler que le train saisi n'existe pas
+	}//Fin du else
+// On ne met pas de return ici car la fonction gère déjà toutes les possibilités
+}
+
+/*
+  code_Q : la fonction est lancée si le code entré est "Q", elle va effectuer la saisie de :
+			-numéro train : on renvoie -2 si le train n'existe pas sinon on continue
+			-quai : deux fonctions vérifient si le quai est incorrect ou si le délai de 30 minutes est respecté auquel cas on
+                    supprime le quai
+  La fonction renvoie -1 si il n'y a pas de train à l'approche.
+  Une fois les vérifications faites, on stocke le nouveau quai dans le structure du train correspondant.
+  Cette fonction vérifie l'annonce d'au moins un train, l'existance du train que l'on veut modifier, le respect du délai des 30 minutes
+  vis à vis du nouveau quai et la validité du quai saisi.
+  code_Q permet le changement de quai d'un train.
+*/
+int code_Q(strTrain Tab_Train[], int nbTrain, int nbQuai)
+{
+    /*
+        Les variables utilisés dans ces fonctions sont :
+            -strTrain Tab_Train[] : Tableau de train utilisé pour les tests
+            -int nbTrain : Nombre de trains affichés en gare utilisé pour savoir jusqu'où parcourir le tableau
+            -int nbQuai : Nombre de quais disponibles selon la saisie préliminaire pour les tests
+            -char quai : Contient le quai(un seul caractère) du train dont on a saisi le numéro qui sera utilisé pour les tests
+            -int heure : Variable des heures, passées en minutes, du train saisi qui sera testé
+            -int numtrainmodif : Contient le numéro du train saisi qui sera testé
+    */
+	int t_errmin_code_Q(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif);
+	int t_errquai_code_Q(int quai, int nbQuai);
+
+	int num, i;// Num pour contenir le numéro du train saisi et i la variable compteur
+	char quai;// Quai pour contenir le caractère entré pour le quai
+
+	if(nbTrain<1)// On vérifie si il y a au moins un train
+	{
+		printf("Erreur : Aucun train est … l'approche\n");
+		system("pause");
+		return -1;// On renvoie alors -1
+	}
+	printf("Veuillez saisir le num‚ro du train : ");
+    while(scanf("%d", &num)==0)// Saisie du numéro de train
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+    fflush(stdin);
+	for (i=0; i<nbTrain; i++)// On boucle de 0 à nbTrain
+	{
+		if (Tab_Train[i].num == num)// On vérifie si le numéro saisi correspond à celui du train Tab_Train[i]
+		{
+			printf("Veuillez saisir la lettre du quai correspondant au train : ");
+			quai=getchar();// Saisie du quai
+
+            /*
+                Cette condition est vrai si les deux fonctions renvoient 0 ce qui implique que le délai des 30 minutes n'est pas respecté
+                ou que le quai saisi est invalide.
+                La condition est vérifiée avec le train saisi et ses modifications par rapport aux trains affichés.
+            */
+			if (t_errquai_code_Q(quai, nbQuai) || t_errmin_code_Q(Tab_Train, nbTrain, quai, Tab_Train[i].heure, i))
+			{
+				quai=' ';// Il y a une erreur donc on supprime le quai
+			}
+
+			Tab_Train[i].quai= quai;// On insére alors le quai saisie dans la structure (vide si il y a eu une erreur).
+
+			return 0;// Tout s'est bien passé on renvoie 0
+		}
+	}
+	// La boucle for s'est terminée donc le train n'a pas été trouvé
+	printf("Erreur : Le num‚ro du train entr‚ n'existe pas\n");
+	return -2;// Le train n'existe pas, on renvoie -1
+}
+
+/*
+  code_D : la fonction est lancée si le code entrée est "D", elle va effectuer la saisie de :
+			-numéro train : on renvoie -1 si le numéro du train n'existe pas
+  Si le train existe, on va alors le supprimer et mettre à jour Tab_Train et Tab_Provenance.
+  Cette fonction vérifie l'existence du train saisi.
+  code_D permet de supprimer un train affiché.
+*/
+int code_D(strTrain Tab_Train[], int* p_NbTrain,strProv Tab_Provenance[])
+{
+    int i,j;// Variables compteurs
+    int numTrain;// NumTrain contiendra le numéro du train saisi
+
+    printf("Entrez le numero du train au depart : ");
+    while(scanf("%d", &numTrain)==0)// Saisie de numTrain
+    {
+        fflush(stdin);
+        printf("Erreur : Saisie incorrecte\n\n");
+        printf("Veuillez saisir le num‚ro du train : ");
+    }
+
+    for(i=0;i<*p_NbTrain;i++)// Boucle de 0 à la valeur de la variable pointée par *p_NbTrain
+    {
+        if(Tab_Train[i].num==numTrain)// On vérifie si numTrain correspond à un train déjà affiché
+        {
+            *p_NbTrain=*p_NbTrain - 1;// Si le train est trouvé, on enlève 1 au nombre de trains
+			Tab_Provenance[Tab_Train[i].i_prov].nbtrainact--;// On enlève 1 au nombre de provevances actuellement affichées du train saisi
+            for(j=i;j<(*p_NbTrain);j++)// Boucle de i à la valeur de la variable pointée par *p_NbTrain (sachant qu'on a décrémenté *p_NbTrain)
+            {
+                Tab_Train[j]=Tab_Train[j+1];// On décale alors les valeurs ce qui supprime le train que l'on a saisi
+            }
+            return 0;// Le train a été supprimé, on quitte la fonction en renvoyant 0
+        }
+    }
+	// La boucle for s'est terminée donc le train n'a pas été trouvé
+	printf("Erreur : Le num‚ro du train entr‚ n'existe pas\n");
+	return -1;// Le train n'existe pas, on renvoie -1
+}
+
+/*
+  code_V : la fonction est lancée si le code entré est "V", elle va effectuer la saisie de :
+			-provenance : on renvoie -1 si la provenance n'existe pas
+  Si le provenance existe, on va alors afficher, grâce à Tab_Provenance, le nombre de trains totaux passés et ceux affichés pour
+  cette provenance.
+  Cette fonction vérifie l'existence de la provenance saisie.
+  code_V permet d'afficher les informations sur une provenance.
+*/
+int code_V(strProv Tab_Provenance[], int nbProv)
+{
+	int i;// Variable compteur
+	CH15 prov;// Variable pour stocker la provenance saisie
+
+	printf("Entrez la provenance recherch‚e : ");
+	gets(prov);// Saisie de la provenance
+
+	for(i=0 ; i<nbProv ; i++)// Boucle de 0 à nbProv
+	{
+		if(strcmp(prov,Tab_Provenance[i].nom)==0)// On vérifie si la provenance saisie correspond à celle de Tab_Provenance[i]
+		{
+		    // Changement du printf selon les cas :
+
+			if(Tab_Provenance[i].nbtraintot==1)// On vérifie si il y eu un seul train passé par cette provenance
+			{
+                printf("%d train est actuellement affich‚ avec la provenance %s\n",Tab_Provenance[i].nbtrainact,Tab_Provenance[i].nom);
+                printf("%d train a ‚t‚ affich‚ depuis le d‚but avec la provenance %s\n\n",Tab_Provenance[i].nbtraintot,Tab_Provenance[i].nom);
+                system("pause");
+                return 0;//retourne 0 => tout c'est bien passé
+			}
+			else if(Tab_Provenance[i].nbtrainact==1)// On vérifie si il y eu un seul train affiché pour cette provenance
+			{
+                printf("%d train est actuellement affich‚ avec la provenance %s\n",Tab_Provenance[i].nbtrainact,Tab_Provenance[i].nom);
+                printf("%d trains ont ‚t‚ affich‚s depuis le d‚but avec la provenance %s\n\n",Tab_Provenance[i].nbtraintot,Tab_Provenance[i].nom);
+                system("pause");
+                return 0;//retourne 0 => tout c'est bien passé
+			}
+            else
+            {
+                printf("%d trains sont actuellement affich‚s avec la provenance %s\n",Tab_Provenance[i].nbtrainact,Tab_Provenance[i].nom);
+                printf("%d trains ont ‚t‚ affich‚s depuis le d‚but avec la provenance %s\n\n",Tab_Provenance[i].nbtraintot,Tab_Provenance[i].nom);
+                system("pause");
+                return 0;//retourne 0 => tout c'est bien passé
+            }
+		}
+	}
+	// La boucle for s'est terminée donc le train n'a pas été trouvé
+	printf("Erreur : La provenance entr‚e n'existe pas\n");
+	return -1;// Le train n'existe pas, on renvoie -1
+}
+
+/*
+  code_P : la fonction est lancée si le code entré est "P".
+  On va alors afficher, grâce à Tab_Provenance, le nombre de trains totaux passés et ceux affichés pour toutes les provenances.
+  code_P permet d'afficher les informations sur les provenances.
+*/
+void code_P(strProv Tab_Provenance[], int nbProv)
+{
+	int i;// Variable compteur
+
+	printf("ÚÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ¿\n");// Haut du tableau
+	printf("³               ³ Nb de train de cette provenance ³\n");// Nom des champs supérieurs
+	printf("ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÂÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´\n");// Séparateur
+	printf("³Provenance     ³Actuellement    ³Aujourd'hui     ³\n");// Nom des champs inférieurs
+	printf("ÃÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÅÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄ´\n");// Séparateur
+	for(i=0 ; i<nbProv ; i++)// Boucle de 0 à nbProv
+	{
+		printf("³%-15s³%16d³%16d³\n",Tab_Provenance[i].nom,Tab_Provenance[i].nbtrainact,Tab_Provenance[i].nbtraintot);// Lignes du tableau
+	}
+	printf("ÀÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÁÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÄÙ\n");// Bas du tableau
+	system("pause");
+}
+
+/*
+  "t_" signifie que la fonction effectue un test, "inTabProv" signifie "dans le tableau de provenance"
+  Cette fonction va vérifier si prov est présent ou non dans Tab_Provenance.
+  Elle renvoie 0 si prov est présent ou 1 si il est absent.
+*/
+int t_inTabProv(strProv Tab_Provenance[], int max, CH15 prov)
+{
+    int a=1, k;// Variable a pour le retour qui est de base à 1 et k le compteur
+
+    for(k=0;k<max; k++)// Boucle de 0 à max (nombre de provenances acceptées au moment de l'appel)
+    {
+        if(strcmp(prov, Tab_Provenance[k].nom)==0)// On vérifie si prov correspond à la provenance de Tab_Provenance[k]
+        {
+            a=0;// On passe a à 0 donc la provenance a été trouvée
+        }
+    }
+    return a;// On renvoie a qui peut valoir 1 ou 0
+}
+
+/*
+  "t_errmin" signifie "test de l'erreur du délai de 30 minutes" pour le "code_A"
+  Cette fonction va vérifier si le délai de 30 minutes est respecté avec l'heure et le quai passés en argument et ce vis à vis des trains
+  déjà présents dans Tab_Train.
+  Elle renvoie 0 si le délai est respecté ou 1 si il ne l'est pas.
+*/
+int t_errmin_code_A(strTrain Tab_Train[], int nbTrain, char quai, int heure)
+{
+	int j;// Variable compteur
+
+	for (j=0; j < nbTrain; j++)// Boucle de 0 à nbTrain
+	{
+		if (Tab_Train[j].quai == quai)// On vérifie si le quai saisi correspond au quai de Tab_Train[j]
+		{
+			if (((Tab_Train[j].heure - (heure)) >= -30) && ((Tab_Train[j].heure - (heure)) <= 30))// On vérifie si la difference entre
+                // l'heure saisie et l'heure de Tab_Train[j] respecte le délai de 30 minutes
+			{
+				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				system("pause");
+				return 1;// On envoie 1 car le délai n'est pas respecté
+			}
+		}
+	}
+	return 0;// Le délai est bon donc on renvoie 0
+}
+
+/*
+  "t_errmin" signifie "test de l'erreur du délai de 30 minutes" pour le "code_R"
+  Cette fonction va vérifier si le délai de 30 minutes est respecté. On envoie l'heure modifiée et le quai du train d'indice
+  numtrainmodif(dans Tab_Train) pour le comparer aux autres trains de Tab_Train.
+  Elle renvoie 0 si le délai est respecté ou 1 si il ne l'est pas.
+*/
+int t_errmin_code_R(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif)
+{
+	int j;// Variable compteur
+
+	for (j=0; j < nbTrain; j++)// Boucle de 0 à nbTrain
+	{
+		if (Tab_Train[j].quai == quai && numtrainmodif != j)// On vérifie si le quai du train modifié correspond au quai de Tab_Train[j]
+            // et que l'on compare pas le train modifié à lui-même
+		{
+			if (((Tab_Train[j].heure - (heure)) >= -30) && ((Tab_Train[j].heure - (heure)) <= 30))// On vérifie si la difference entre
+                // l'heure modifiée et l'heure de Tab_Train[j] respecte le délai de 30 minutes
+			{
+				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				system("pause");
+				return 1;// On envoie 1 car le délai n'est pas respecté
+			}
+		}
+	}
+	return 0;// Le délai est bon donc on renvoie 0
+}
+
+/*
+  "t_errmin" signifie "test de l'erreur du délai de 30 minutes" pour le "code_Q"
+  Cette fonction va vérifier si le délai de 30 minutes est respecté. On envoie le quai modifié et l'heure du train d'indice
+  numtrainmodif(dans Tab_Train) pour le comparer aux autres trains de Tab_Train.
+  Elle renvoie 0 si le délai est respecté ou 1 si il ne l'est pas.
+*/
+int t_errmin_code_Q(strTrain Tab_Train[], int nbTrain, char quai, int heure, int numtrainmodif)
+{
+	int j;// Variable compteur
+
+	for (j=0; j < nbTrain; j++)// Boucle de 0 à nbTrain
+	{
+		if (Tab_Train[j].quai == quai && numtrainmodif != j)// On vérifie si le quai modifié correspond au quai de Tab_Train[j] et que
+		    // l'on compare pas le train modifié à lui-même
+		{
+			if (((Tab_Train[j].heure - (heure)) >= -30) && ((Tab_Train[j].heure - (heure)) <= 30))// On vérifie si la difference entre
+                // l'heure du train modifié et l'heure de Tab_Train[j] respecte le délai de 30 minutes
+			{
+				printf("Erreur : Le d‚lai de 30 minutes n'est pas respect‚\n");
+				system("pause");
+				return 1;// On envoie 1 car le délai n'est pas respecté
+			}
+		}
+	}
+	return 0;// Le délai est bon donc on renvoie 0
+}
+
+/*
+  "t_errquai" signifie "test de l'erreur de la validité du quai" pour le "code_Q"
+  Cette fonction va vérifier si le quai est valide. On envoie le quai du train modifié et le nombre de quais disponibles(nbQuai).
+  Elle renvoie 0 si le quai est valide ou 1 si il ne l'est pas.
+*/
+int t_errquai_code_Q(int quai, int nbQuai)
+{
+	if (('A' > quai) || (quai >= ('A'+ nbQuai)))// On vérifie si le code ASCII de 'A' est supérieur à celui de quai ou si le code ASCII
+	   // de quai est supérieur ou égal à la somme du code ASCII de 'A' et de nbquai
+	{
+	    /*
+            Si la condition est vraie c'est que quai est une lettre avant A dans le tableau d'ASCII et donc invalide ou alors le quai
+            saisi est supérieur ou égal au code ASCII de 'A' additinné au nombre de quai. Cette condition fonctionne car les caractères
+            acceptés sont entre 'A' et 'F' soit entre les codes ASCII entre 'A' et 'F' (ces codes se suivent). On sait que 'A' + nbQuai
+            correspond au code ASCII de la dernière lettre acceptée + 1. Donc si il y a 6 quai on aurait le code ASCII de la lettre 'F'
+            + 1.
+	    */
+		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
+		system("pause");
+		return 1;// On envoie 1 car le quai est invalide
+	}
+	return 0;// Le quai est valide donc on envoie 0
+}
+
+/*
+  "t_errquai" signifie "test de l'erreur de la validité du quai" pour le "code_A"
+  Cette fonction va vérifier si le quai est valide. On envoie le quai du train modifié et le nombre de quais disponibles(nbQuai).
+  Elle renvoie 0 si le quai est valide ou 1 si il ne l'est pas.
+*/
+int t_errquai_code_A(int quai, int nbQuai)
+{
+	if (('A' > quai) || (quai >= ('A'+ nbQuai)))// On vérifie si le code ASCII de 'A' est supérieur à celui de quai ou si le code ASCII
+	   // de quai est supérieur ou égal à la somme du code ASCII de 'A' et de nbquai
+	{
+	    /*
+            Si la condition est vraie c'est que quai est une lettre avant A dans le tableau d'ASCII et donc invalide ou alors le quai
+            saisi est supérieur ou égal au code ASCII de 'A' additinné au nombre de quai. Cette condition fonctionne car les caractères
+            acceptés sont entre 'A' et 'F' soit entre les codes ASCII entre 'A' et 'F' (ces codes se suivent). On sait que 'A' + nbQuai
+            correspond au code ASCII de la dernière lettre acceptée + 1. Donc si il y a 6 quai on aurait le code ASCII de la lettre 'F'
+            + 1.
+	    */
+		printf("Erreur : Le num‚ro de quai entr‚ est en dehors des quais disponibles\n");
+		system("pause");
+		return 1;// On envoie 1 car le quai est invalide
+	}
+	return 0;// Le quai est valide donc on envoie 0
+}
+
+/*
+  "triTrain" signifie "tri des trains de Tab_Train"
+  Cette fonction va trier les trains dans l'ordre croissant de leurs heures avec un tri bulle.
+  Elle ne renvoie rien.
+*/
+void triTrain(strTrain Tab_Train[], int nbTrain)
+{
+	int i;// Initialisation du compteur
+	int move;// Variable de test pour savoir si une permutation a été faite
+	strTrain Tab_TrainTemp;// Structure train temporaire
+
+	do
+	{
+		move=0;// On passe move à 0 car il n'y a pas de permutation
+		for(i=0; i<nbTrain-1 ; i++)// Boucle de 0 à nbTrain-1 pour effectuez le tri bulle
+		{
+			if(Tab_Train[i].heure>Tab_Train[i+1].heure)// On vérifie si l'heure de Tab_Train[i] est supérieure à celle de Tab_Train[i+1]
+			{
+				// On permute les deux cases
+				Tab_TrainTemp=Tab_Train[i+1];// On met la case i+1 dans la variable temporaire
+				Tab_Train[i+1]=Tab_Train[i];// On met la case i dans la case i+1
+				Tab_Train[i]=Tab_TrainTemp;// On met la variable temporaire(soit l'ancienne case i+1) dans la case i
+				move=1;// Il y a eu une permutation alors on passe move à 1
+			}
+		}
+	}while(move==1);// On sort de la boucle si il n'y a plus de permutations
+}
+
+/*
+  "ajoutTrain" signifie "ajout de train dans Tab_Train"
+  Cette fonction va ajouter un train dans le tableau avec les valeurs qu'on lui envoie(num, i_Prov, heure et quai).
+  Elle ne renvoie rien.
+*/
+void ajoutTrain(strTrain Tab_Train[],int nbTrain, int num, int i_Prov, int heure, char quai)
+{
+	int i;// Variable compteur
+
+	for(i=nbTrain ; i>0 ; i--)// Boucle de nbTrain à 0
+	{
+		if(Tab_Train[i-1].heure>heure)// On vérifie si l'heure passée en argument est inférieure à l'heure du train à la position
+                                      //  précédente(i-1)
+		{
+			Tab_Train[i]=Tab_Train[i-1];// On déplace le train d'indice i à l'indice i-1
+		}
+		else// Si la conditon n'est pas vérifié
+		{
+			break;// On sort de la boucle for
+		}
+	}
+
+	Tab_Train[i].num = num;// On affecte le numero du train à la position i (qui a été affecté par la boucle for)
+	Tab_Train[i].i_prov = i_Prov;//On affecte l'indice de la provenance à la position i (qui a été affecté par la boucle for)
+	Tab_Train[i].heure = heure; // On affecte l'heure en minutes à la position i (qui a été affecté par la boucle for)
+	Tab_Train[i].quai = quai;// On affecte le quai à la position i (qui a été affecté par la boucle for)
+}
